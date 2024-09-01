@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,11 +23,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-809u9d09l4c8-&og5x+fu68t2tq3u%ca7!=8p!8s9ue1w2s802'
 
+''' Week 11 - Configure Secure Settings '''
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['yourdomain.com', 'localhost', '127.0.0.1']
 
+# Security settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True  # Use HTTPS for CSRF cookies
+SESSION_COOKIE_SECURE = True  # Use HTTPS for session cookies
 
 # Application definition
 
