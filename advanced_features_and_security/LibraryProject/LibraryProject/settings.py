@@ -37,6 +37,22 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 CSRF_COOKIE_SECURE = True  # Use HTTPS for CSRF cookies
 SESSION_COOKIE_SECURE = True  # Use HTTPS for session cookies
 
+
+# Week 11 - task 4 (step 1) Configure Django for HTTPS Support Security settings
+SECURE_SSL_REDIRECT = True  # Redirect all non-HTTPS requests to HTTPS
+SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security for one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include all subdomains in the HSTS policy
+SECURE_HSTS_PRELOAD = True  # Allow preloading of the HSTS policy
+
+# Cookie settings
+SESSION_COOKIE_SECURE = True  # Ensure session cookies are only transmitted over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only transmitted over HTTPS
+
+# Additional security headers -  Implement Secure Headers
+X_FRAME_OPTIONS = 'DENY'  # Prevents the site from being framed to avoid clickjacking attacks
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME-sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable browser's XSS filtering
+
 # Application definition
 
 INSTALLED_APPS = [
