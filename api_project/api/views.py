@@ -9,6 +9,12 @@ class BookList(generics.ListAPIView):
     serializer_class = BookSerializer # Use the BookSerializer for serialization
 
 
+class BookViewSet(viewsets.ModelViewSet):
+    """
+    A viewset that provides the standard actions for the Book model.
+    """
+    queryset = Book.objects.all() # Retrieve all book instances
+    serializer_class = BookSerializer # Use the BookSerializer for serialization
 
 
 
