@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',  # Add rest framework
     'api', # Add API app
+    'rest_framework.authtoken', # Add Token Authentication to installed apps.
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Update DRF Settings for Authentication == Add token authentication to the REST framework settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Enable token authentication
+        'rest_framework.authentication.SessionAuthentication', # Enable session authentication
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Default permission for all views
+    ],
+}
