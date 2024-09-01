@@ -3,7 +3,8 @@
 # Set Up the Custom User Model
 
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils.translation import gettext_lazy as _
 
 # Create a Custom User Model:
 
@@ -89,6 +90,23 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_superuser=True.'))
 
         return self.create_user(username, email, password, **extra_fields)
+    
+# Define Custom Permissions in Models; Update the Book model to include custom permissions
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
+
+    class Meta:
+        permissions = [
+            ('can_view', 'Can view book'),
+            ('can_create', 'Can create book'),
+            ('can_edit', 'Can edit book'),
+            ('can_delete', 'Can delete book'),
+        ]
+
+    def __str__(self):
+        return self.title
 
 # Update the CustomUser class to use the custom manager
 class CustomUser(AbstractUser):
@@ -99,6 +117,15 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+
+
+
+
+
+
+
 
 
 # relationship_app/models.py

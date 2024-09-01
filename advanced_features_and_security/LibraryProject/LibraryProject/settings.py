@@ -124,5 +124,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Custom user model
+# Update Settings to Use Custom User Model
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
