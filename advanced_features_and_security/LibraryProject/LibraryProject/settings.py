@@ -44,6 +44,9 @@ SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security for one 
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include all subdomains in the HSTS policy
 SECURE_HSTS_PRELOAD = True  # Allow preloading of the HSTS policy
 
+# Set this to True only when your site is served via HTTPS in production
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Cookie settings
 SESSION_COOKIE_SECURE = True  # Ensure session cookies are only transmitted over HTTPS
 CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only transmitted over HTTPS
