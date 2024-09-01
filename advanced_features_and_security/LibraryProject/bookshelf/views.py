@@ -3,6 +3,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from .forms import ContactForm
 
 @permission_required('relationship_app.can_view', raise_exception=True)
 def book_list(request):
@@ -40,6 +41,19 @@ def delete_book(request, book_id):
     return render(request, 'relationship_app/delete_book.html', {'book': book})
 
 
+
+# Week 11 _Task 2 -  Use the Form in a View
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Process form data here (e.g., send an email)
+            return render(request, 'bookshelf/contact_success.html')
+    else:
+        form = ContactForm()
+
+    return render(request, 'bookshelf/contact_form.html', {'form': form})
 
 
 
