@@ -46,14 +46,14 @@ def delete_book(request, book_id):
 
 def contact_view(request):
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = ExampleForm(request.POST)
         if form.is_valid():
             # Process form data here (e.g., send an email)
             return render(request, 'bookshelf/contact_success.html')
     else:
         form = ContactForm()
 
-    return render(request, 'bookshelf/contact_form.html', {'form': form})
+    return render(request, 'bookshelf/example_form.html', {'form': form})
 
 
 
