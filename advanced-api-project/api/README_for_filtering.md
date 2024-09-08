@@ -27,3 +27,18 @@ You can order the results using the `ordering` query parameter:
 - **Filter by Title**: `/api/books/?title=Harry`
 - **Search by Title**: `/api/books/?search=Harry`
 - **Order by Title**: `/api/books/?ordering=title`
+
+OR
+
+## Filtering, Searching, and Ordering
+
+This API provides advanced query capabilities for the `Book` model.
+
+### Filter by:
+- `title`: Filter books by their title.
+- `author__name`: Filter books by their author's name.
+- `publication_year`: Filter books by the year they were published.
+
+#### Example:
+```bash
+curl http://127.0.0.1:8000/api/books/?author__name=John%20Doe
