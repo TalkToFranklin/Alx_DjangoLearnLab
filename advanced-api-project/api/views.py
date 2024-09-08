@@ -63,7 +63,7 @@ class BookDeleteView(generics.DestroyAPIView):
 # api/views.py
 
 from rest_framework import generics, permissions
-from django_filters import rest_framework
+from django_filters import rest_framework as filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import Book
@@ -78,6 +78,7 @@ class BookListView(generics.ListAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     permission_classes = [permissions.AllowAny]  # Allow read access to everyone
 
     # Set up filtering, searching, and ordering
