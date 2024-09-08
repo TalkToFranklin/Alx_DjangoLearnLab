@@ -88,4 +88,6 @@ class BookListView(generics.ListAPIView):
     ordering_fields = ['title', 'publication_year']  # Fields to order by
     ordering = ['title']  # Default ordering
 
-    filters.OrderingFilter
+OrderingFilter = [filters.OrderingFilter]
+
+SearchFilter=  [filters.SearchFilter]
