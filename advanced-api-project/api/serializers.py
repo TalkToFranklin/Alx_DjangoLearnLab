@@ -34,8 +34,20 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = ['id', 'name', 'books'] # Include author's name and related books
 
+# Week 13 - Task 1 - step 3
 
-# Week 13 - step 5
+class BookCreateView(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Custom logic before saving the book
+        print("Creating a new book...")
+        serializer.save()
+
+
+# Week 13 - Task 0 - step 5
 
 """
 This file contains serializers for the API app.
