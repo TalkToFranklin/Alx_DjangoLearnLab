@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',  # Added Django rest_framework to installed apps {Week 13 - step 2}
+    'rest_framework.authtoken',
+    'django_filters', # Week 13 - Task 2 - step 1
     'api',  # Added for the API app
 ]
 
@@ -123,3 +125,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Week 13 - Task 2 - Step 1_3 - Include filtering capabilities in settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ]
+}
