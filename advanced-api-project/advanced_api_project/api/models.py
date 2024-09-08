@@ -24,3 +24,12 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+''' 
+BookListView: Lists all books and allows read access to everyone.
+BookDetailView: Retrieves a single book by its ID and allows read access to everyone.
+BookCreateView: Allows authenticated users to create new books.
+BookUpdateView: Allows authenticated users to update existing books.
+BookDeleteView: Allows authenticated users to delete books.
+'''
