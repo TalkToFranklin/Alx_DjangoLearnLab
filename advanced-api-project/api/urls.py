@@ -1,7 +1,7 @@
 # Week 13 - Task 1 - Step 2
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include  # Import include
 from .views import (
     BookListView,
     BookDetailView,
@@ -12,6 +12,7 @@ from .views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),  # Include api's URLs
     path('books/', BookListView.as_view(), name='book-list'),  # List all books
     path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),  # Retrieve a single book
     path('books/create/', BookCreateView.as_view(), name='book-create'),  # Create a new book
