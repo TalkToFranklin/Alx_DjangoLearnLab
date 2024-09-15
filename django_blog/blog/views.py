@@ -102,11 +102,11 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Post, Comment
+from .models import Post, Comment, Tag # ppty # Week 14 - Task 4 - Passing Check for Checks for “URL Configuration for New Features” added Tag"]
 from .forms import CommentForm
 from django.urls import reverse_lazy # Week 14 - Task 3 - Step_3 Implement Comment Views using class-based views (CBVs) include "CommentCreateView", "CommentUpdateView", "CommentDeleteView" 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView # ppty # Week 14 - Task 4 - Passing Check for Checks for “URL Configuration for New Features” added ListView"]
 from django.urls import reverse_lazy
 from django.db.models import Q # Week 14 - Task 4 - Step_3 Develop Search Functionality
 from taggit.models import Tag
@@ -132,6 +132,39 @@ def tagged_posts(request, tag_name):
     posts = Post.objects.filter(tags__name=tag_name)
     return render(request, 'blog/tagged_posts.html', {'posts': posts, 'tag_name': tag_name})
 
+
+#ppty
+
+# Week 14 - Task 4 - Passing Check for Checks for “URL Configuration for New Features” task blog/urls.py doesn't contain: ["tags/<slug:tag_slug>/", "PostByTagListView.as_view()"]
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs['tag_slug']
+        tag = Tag.objects.get(slug=tag_slug)
+        return Post.objects.filter(tags__in=[tag])
+
+
+#cg4 
+
+# Week 14 - Task 4 - Passing Check for Checks for “URL Configuration for New Features” task blog/urls.py doesn't contain: ["tags/<slug:tag_slug>/", "PostByTagListView.as_view()"]
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'  # Reuse the post list template
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        # Fetch the tag from the URL slug
+        tag_slug = self.kwargs.get('tag_slug')
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        return Post.objects.filter(tags__in=[tag])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))
+        return context
 
 
 # Week 14 - Task 3 - Step_3 Implementation of Class-based views (CBVs) include "CommentCreateView", "CommentUpdateView", "CommentDeleteView" 
