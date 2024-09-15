@@ -108,6 +108,29 @@ from django.urls import reverse_lazy # Week 14 - Task 3 - Step_3 Implement Comme
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.db.models import Q # Week 14 - Task 4 - Step_3 Develop Search Functionality
+from taggit.models import Tag
+
+
+def search_posts(request): # Week 14 - Task 4 - Step_3_1 Update views.py for Search
+    query = request.GET.get('q')
+    results = Post.objects.filter(
+        Q(title__icontains=query) |
+        Q(content__icontains=query) |
+        Q(tags__name__icontains=query)
+    ).distinct()
+    return render(request, 'blog/search_results.html', {'posts': results, 'query': query})
+
+
+def posts_by_tag(request, tag_name): # Week 14 - Task 4 - Step_3_2 Update the Post List View for Tag Filtering
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = Post.objects.filter(tags__name__in=[tag_name])
+    return render(request, 'blog/tag_posts.html', {'posts': posts, 'tag': tag})
+
+# Week 14 - Task 4 - Step_5_2 - Create a view for displaying posts by tag
+def tagged_posts(request, tag_name):
+    posts = Post.objects.filter(tags__name=tag_name)
+    return render(request, 'blog/tagged_posts.html', {'posts': posts, 'tag_name': tag_name})
 
 
 

@@ -23,11 +23,16 @@ class CustomUserCreationForm(UserCreationForm):
 
 from django import forms
 from .models import Post, Comment
+from taggit.forms import TagWidget # Week 14 - Task 4 - Step_2 - Modify Post Creation and Update Forms
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
+        widgets = {    # Week 14 - Task 4 - Step_2_2 - Update forms.py to handle tag input
+            'tags': TagWidget(), #cg4
+            'content': forms.Textarea(attrs={'rows': 4}), #ppty
+        }
 
 class CommentForm(forms.ModelForm): # Week 14 - Task 3 - Step_2 Create Comment Forms
     class Meta:

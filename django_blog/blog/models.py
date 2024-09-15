@@ -11,6 +11,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
 from .models import Post # Week 14 - Task 3 - Step_1 Define the Comment Model
+from taggit.managers import TaggableManager # Week 14 - Task 4 - Step_1 Create the Tag Model
 
 class Post(models.Model):
     """
@@ -34,3 +35,37 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author.username} on {self.post.title}'
+
+
+# Week 14 - Task 4 - Step_1 Create the Tag Model
+
+#ppty
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    published_date = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    tags = models.ManyToManyField(Tag, related_name='posts', blank=True)  # Many-to-many relationship
+
+    def __str__(self):
+        return self.title
+
+
+#cg4
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    published_date = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    tags = TaggableManager()  # Use taggit's TaggableManager for tagging
+
+    def __str__(self):
+        return self.title

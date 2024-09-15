@@ -9,6 +9,8 @@ from .views import (   # Week 14 - Task 2 - Step 4 Define URL Patterns
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
+    search_posts, 
+    posts_by_tag
 )
 
 #prpl
@@ -26,6 +28,8 @@ urlpatterns = [
     path('comment/<int:pk>/edit/', comment_edit, name='comment-edit'),
     path('comment/<int:pk>/delete/', comment_delete, name='comment-delete'),
     path('comment/<int:pk>/update/', comment_update, name='comment-edit'),
+    path('search/', search_posts, name='search-posts'),  # Add search URL # Week 14 - Task 4 - Step_5 - Configure URL Patterns
+    path('tags/<str:tag_name>/', tagged_posts, name='tagged-posts'),  # Add tagging URL Week 14 - Task 4 - Step_5_2 - Add the corresponding URL pattern to Create a view for displaying posts by tag
 ]
 
 
@@ -45,4 +49,5 @@ urlpatterns = [
     path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit-comment'),
     path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete-comment'),
     path('post/<int:pk>/comments/new/', views.add_comment, name='add-comment'), # Week 14 - Task 3 - Step_5 - Define URL Patterns - Added this line to pass checker for "post/<int:pk>/comments/new/"]
+    path('search/', search_posts, name='search_posts'), # Week 14 - Task 4 - Step_5 - Configure URL Patterns
 ]
