@@ -126,8 +126,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/' # Week 14 - Task 0 - Step 4 configure static files and templates
 STATICFILES_DIRS = [
-    BASE_DIR / 'blog/static', 'blog/templates/blog'
-    os.path.join(BASE_DIR, 'blog', 'static', 'templates')
+    BASE_DIR / 'blog/static',
+    os.path.join(BASE_DIR, 'blog', 'static')
 ] # Week 14 - Task 0 - Step 4 configure static files and templates, added comma and change in from one-liner to indent, multi-line structure
 
 # Default primary key field type
