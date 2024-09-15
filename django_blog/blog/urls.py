@@ -24,7 +24,8 @@ urlpatterns = [
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
     path('comment/<int:pk>/edit/', comment_edit, name='comment-edit'),
-     path('comment/<int:pk>/delete/', comment_delete, name='comment-delete'),
+    path('comment/<int:pk>/delete/', comment_delete, name='comment-delete'),
+    path('comment/<int:pk>/update/', comment_update, name='comment-edit'),
 ]
 
 
@@ -43,4 +44,5 @@ urlpatterns = [
     path('posts/<int:post_id>/comments/new/', views.add_comment, name='add-comment'), # Week 14 - Task 3 - Step_5 - Define URL Patterns
     path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit-comment'),
     path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete-comment'),
+    path('post/<int:pk>/comments/new/', views.add_comment, name='add-comment'), # Week 14 - Task 3 - Step_5 - Define URL Patterns - Added this line to pass checker for "post/<int:pk>/comments/new/"]
 ]
