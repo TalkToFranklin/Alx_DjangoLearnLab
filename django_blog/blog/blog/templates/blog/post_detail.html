@@ -12,3 +12,35 @@
         {% endif %}
     </article>
 {% endblock %}
+
+
+<!-- blog/templates/blog/post_detail.html - # Week 14 - Task 3 - Step_4 - Set Up Comment Templates -->
+
+<h2>{{ post.title }}</h2>
+<p>{{ post.content }}</p>
+
+<h3>Comments</h3>
+<ul>
+    {% for comment in post.comments.all %}
+        <li>
+            <strong>{{ comment.author }}:</strong> {{ comment.content }}
+            {% if comment.author == user %}
+                <a href="{% url 'edit-comment' comment.id %}">Edit</a> |
+                <a href="{% url 'delete-comment' comment.id %}">Delete</a>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No comments yet.</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <h4>Leave a Comment:</h4>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% else %}
+    <p>You need to <a href="{% url 'login' %}">login</a> to comment.</p>
+{% endif %}

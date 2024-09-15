@@ -22,9 +22,17 @@ class CustomUserCreationForm(UserCreationForm):
 # Week 14 - Task 2 - Step_2 - Create and Configure Forms
 
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content']
+
+class CommentForm(forms.ModelForm): # Week 14 - Task 3 - Step_2 Create Comment Forms
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Leave a comment...'}),
+        }
