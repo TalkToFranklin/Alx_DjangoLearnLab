@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog' # Week 14 - Task 0 Step_1_4 added blog to installed apps
+    'taggit' # Week 14 - Task 4 - Included due to Checker for  “Integrate Tagging Functionality” task
 ]
 
 MIDDLEWARE = [
