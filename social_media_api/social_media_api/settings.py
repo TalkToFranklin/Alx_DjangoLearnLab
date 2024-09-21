@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-68x2sdmz=%u!xpo-(pej5khrrsi3gsvd&aix&yylw-^$1@_04j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False  # Week 15 - Task 4 - step 1_1 - Update settings.py for Production ppty
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', 'your_ip_address'] # Week 15 - Task 4 - step 1_1 - Update settings.py for Production ppty
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',  # Add token authentication
     'accounts', # Add accounts app for user management
     'posts', # Add posts app for comment and posting
+    'notifications' # Add notifications app for notifications
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Week 15 - Task 4 - step 1_3 - Static Files Configuration ppty
 ]
 
 ROOT_URLCONF = 'social_media_api.urls'
@@ -81,6 +83,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'USER': 'your_db_user', # Week 15 - Task 4 - step 1_1 - Update settings.py for Production ppty
+        'PASSWORD': 'your_db_password',
+        'HOST': 'localhost',  # or your database host
+        'PORT': '',  # default is usually fine
     }
 }
 
@@ -119,7 +125,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/' # Week 15 - Task 4 - step 1_3 - Static Files Configuration ppty changed from 'static/' to '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Week 15 - Task 4 - step 1_3 - Static Files Configuration ppty (Ensure this directory exists)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -136,3 +143,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+# Week 15 - Task 4 - step 1_1 - Update settings.py for Production ppty
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
