@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework', # Add Django REST Framework - Week 15 - Task 0 - step 5 - Configure settings.py </> Add Installed Apps
+    'rest_framework', # Add Django REST Framework - Week 15 - Task 0 - step 1_5 - Configure settings.py </> Add Installed Apps
     'rest_framework.authtoken',  # Add token authentication
     'accounts', # Add accounts app for user management
 ]
@@ -124,3 +124,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Week 15 - Task 0 - step 2_2 - Update Settings to specify the Custom User Model
+AUTH_USER_MODEL = 'accounts.CustomUser'
