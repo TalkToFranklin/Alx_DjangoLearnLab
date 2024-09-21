@@ -6,6 +6,8 @@ from django.shortcuts import render
 
 # Week 15 - Task 1 - step 3 - Create Views for CRUD Operations Using Django REST Framework’s viewsets
 
+User = get_user_model() # Week 15 - Task 2 - step 3 - Create Views for CRUD Operations Using Django REST Framework’s viewsets
+
 from rest_framework import viewsets, permissions, filters, generics
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
@@ -14,6 +16,7 @@ from rest_framework.decorators import api_view, permission_classes # Week 15 - T
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import User
+from django.contrib.auth import get_user_model # Week 15 - Task 2 - step 3  - Implement the Feed Functionality - ppty 3
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
@@ -52,7 +55,12 @@ def user_feed(request):
 
 class FeedView(generics.ListAPIView):
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
+        # Get the current user - cgpt 4
         user = self.request.user
+        # Get all users that the current user follows
+        following_users = user.following.all()
+        # Filter posts where the author is in the list of followed users and order by created_at
         return Post.objects.filter(author__in=user.following.all()).order_by('-created_at')
