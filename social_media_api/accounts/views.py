@@ -25,6 +25,7 @@ CustomUser = get_user_model() # cg4
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]  # Allow any user to register - ppty
 
     def create(self, request, *args, **kwargs): # cg4
         response = super().create(request, *args, **kwargs)
@@ -56,7 +57,7 @@ class ProfileView(generics.RetrieveUpdateAPIView): # cg4
 
 # Week 15 - Task 2 - step 2 - Create API Endpoints for Managing Follows
 
-#cg4
+#cg4 -- OLD didn't pass checker
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -73,3 +74,27 @@ def unfollow_user(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
     request.user.following.remove(target_user)
     return Response({"message": "Successfully unfollowed"}, status=status.HTTP_200_OK)
+
+# Week 15 - Task 2 - step 2 - Create API Endpoints for Managing Follows
+
+# cg4 - NEW - should pass checker
+
+# Follow User API
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+        if request.user != target_user:
+            request.user.following.add(target_user)
+            return Response({"message": "Successfully followed"}, status=status.HTTP_200_OK)
+        return Response({"error": "Cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
+
+# Unfollow User API
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+        request.user.following.remove(target_user)
+        return Response({"message": "Successfully unfollowed"}, status=status.HTTP_200_OK)
