@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')), # Week 15 - Task 0 - step 3_2 - Include the accounts app URLs in the main Project urls.py
+    path('api/', include('posts.urls')),  # Week 15 - Task 1 - step 4_2 - Include posts app URLs
 ]
