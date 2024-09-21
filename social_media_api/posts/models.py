@@ -23,7 +23,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-# Week 15 - Task 3 - step 1 - Create a like model in posts app - ppty
+# Week 15 - Task 3 - step 1_1 - Create a like model in posts app - ppty
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
