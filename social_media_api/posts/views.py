@@ -121,4 +121,66 @@ def create_like_notification(user, post):
         target_object_id=post.id
     )
 
-generics.get_object_or_404(Post, pk=pk)
+# Figure how to add the code below for >> Checks for “Create views to handle liking and unliking posts. These views should update the Like model and generate appropriate notifications.” task
+# 
+# generics.get_object_or_404(Post, pk=pk)
+
+# Solution. # ppty
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .models import Post, Like, Comment
+from .serializers import PostSerializer
+from django.contrib.auth import get_user_model
+from notifications.models import Notification
+
+User = get_user_model()
+
+class PostViewSet(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+class FeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        following_users = user.following.all()  # Get all users that the current user follows
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')  # Filter posts by followed users
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    # Use generics.get_object_or_404 to retrieve the post
+    post = generics.get_object_or_404(Post, pk=pk)  
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+    if created:
+        # Create a notification for the post author
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb='liked',
+            target_content_type=ContentType.objects.get_for_model(post),
+            target_object_id=post.id,
+        )
+        return Response({'message': 'Post liked!'}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({'message': 'You have already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    # Use generics.get_object_or_404 to retrieve the post
+    post = generics.get_object_or_404(Post, pk=pk)  
+    try:
+        like = Like.objects.get(user=request.user, post=post)
+        like.delete()
+        return Response({'message': 'Post unliked!'}, status=status.HTTP_204_NO_CONTENT)
+    except Like.DoesNotExist:
+        return Response({'error': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
