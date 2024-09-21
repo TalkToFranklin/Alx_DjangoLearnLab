@@ -7,8 +7,10 @@ from django.db import models
 # Week 15 - Task 0 - step 2_1 - Create a Custom User Model
 
 # accounts/models.py
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, get_user_model
 from django.db import models
+
+User = get_user_model() # Week 15 - Task 2 - step 1 - Update the User Model to Handle Follows
 
 class CustomUser(AbstractUser):
     bio = models.TextField(max_length=500, blank=True, null=True)

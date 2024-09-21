@@ -8,15 +8,17 @@ from django.shortcuts import render
 
 # accounts/views.py _ core ppty
 
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from .models import CustomUser
+from .models import CustomUser, User
 from .serializers import UserSerializer, LoginSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.decorators import api_view, permission_classes # Week 15 - Task 2 - step 2 - Create API Endpoints for Managing Follows
+from django.shortcuts import get_object_or_404
 
 CustomUser = get_user_model() # cg4
 
@@ -51,3 +53,23 @@ class ProfileView(generics.RetrieveUpdateAPIView): # cg4
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+
+# Week 15 - Task 2 - step 2 - Create API Endpoints for Managing Follows
+
+#cg4
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
+    if request.user != target_user:
+        request.user.following.add(target_user)
+        return Response({"message": "Successfully followed"}, status=status.HTTP_200_OK)
+    return Response({"error": "Cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unfollow_user(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
+    request.user.following.remove(target_user)
+    return Response({"message": "Successfully unfollowed"}, status=status.HTTP_200_OK)
