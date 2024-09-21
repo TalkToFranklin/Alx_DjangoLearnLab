@@ -120,3 +120,5 @@ def create_like_notification(user, post):
         target_content_type=ContentType.objects.get_for_model(post),
         target_object_id=post.id
     )
+
+generics.get_object_or_404(Post, pk=pk)
