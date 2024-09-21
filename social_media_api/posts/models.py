@@ -23,6 +23,15 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+# Week 15 - Task 3 - step 1 - Create a like model in posts app - ppty
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    
+    class Meta:
+        unique_together = ('user', 'post')  # Prevent multiple likes from the same user on the same post
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
