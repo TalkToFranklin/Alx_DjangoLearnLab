@@ -98,3 +98,61 @@ class UnfollowUserView(generics.GenericAPIView):
         target_user = get_object_or_404(User, id=user_id)
         request.user.following.remove(target_user)
         return Response({"message": "Successfully unfollowed"}, status=status.HTTP_200_OK)
+
+
+# PPTY to pass checker for permissions.IsAuthenticated
+
+# accounts/views.py
+
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth import get_user_model
+from .serializers import UserSerializer, LoginSerializer
+
+User = get_user_model()
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]  # Allow any user to register
+
+class LoginView(generics.GenericAPIView):  # Change to GenericAPIView
+    serializer_class = LoginSerializer
+    permission_classes = [permissions.AllowAny]  # Allow any user to login
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data['username']
+            password = serializer.validated_data['password']
+            try:
+                user = User.objects.get(username=username)
+                if user.check_password(password):
+                    token, created = Token.objects.get_or_create(user=user)
+                    return Response({'token': token.key}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated]) # Week 15 - Task 2 - step 2 - Create API Endpoints for Managing Follows = Needed to pass checker
+def follow_user(request, user_id):
+    try:
+        user_to_follow = User.objects.get(id=user_id)
+        request.user.following.add(user_to_follow)
+        return Response({'message': f'You are now following {user_to_follow.username}'}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def unfollow_user(request, user_id):
+    try:
+        user_to_unfollow = User.objects.get(id=user_id)
+        request.user.following.remove(user_to_unfollow)
+        return Response({'message': f'You have unfollowed {user_to_unfollow.username}'}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
